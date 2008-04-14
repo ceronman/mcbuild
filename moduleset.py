@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 class MonoModule(SVNModule):
 	repository = 'svn://svn.myrealbox.com/source/trunk' 
 
