@@ -1,0 +1,63 @@
+import os
+import sys
+import traceback
+import optparse
+from module import *
+from configuration import conf
+
+def configure_environment():
+	os.environ['LD_LIBRARY_PATH'] = conf['PREFIX'] + '/lib'+ ':' + os.environ.get('LD_LIBRARY_PATH', '')
+	os.environ['C_INCLUDE_PATH'] = conf['PREFIX'] + '/include'+ ':' + os.environ.get('C_INCLUDE_PATH', '')
+	os.environ['ACLOCAL_PATH'] = conf['PREFIX'] + '/share/aclocal'
+	os.environ['PKG_CONFIG_PATH'] = conf['PREFIX'] + '/lib/pkgconfig'+ ':' + os.environ.get('PKG_CONFIG_PATH', '')
+	os.environ['PATH'] = conf['PREFIX'] + '/bin'+ ':' + os.environ.get('PATH', '')
+	os.environ['CONFIG_SITE'] = '/tmp/autoconf.site'
+	config_site = open(os.environ['CONFIG_SITE'], 'w')
+	config_site.write('test "$prefix" = NONE && prefix=%s \n' % conf['PREFIX'])
+	config_site.close()
+
+if __name__ == '__main__':
+	configure_environment()
+	global moduleset
+	parser = optparse.OptionParser()
+	parser.add_option('-s', '--start', dest='start', help='start from which module')
+	parser.add_option('-e', '--shell', action='store_true', dest='shell', help='open a shell inside the new environment')
+	parser.add_option('-r', '--run', action='store_true', dest='run', help='run a program inside the new environment')
+	parser.add_option('-u', '--update', action='store_true', dest='update', help='update and rebuild all modules')
+	parser.add_option('-v', '--verbose', action='store_true', dest='verbose', help='show output of commands')
+	(options, args) = parser.parse_args()
+	
+	try:
+
+		if options.shell:
+			os.environ['PS1'] = '[mcbuild]' + os.environ.get('PS1', '[\u@\h \W]\$ ')
+			user_shell = os.environ.get('SHELL', '/bin/sh')
+			os.execl(user_shell)
+
+		if options.run:
+			os.execlp(*args)
+			
+		if options.update:
+			args = ['update', 'configure', 'compile']
+
+		execfile(conf['MODULESET_PATH'])
+
+		if options.start is not None:
+			names = [m.name for m in moduleset]
+			moduleset = moduleset[names.index(options.start):]
+
+		flag = (options.start != None)
+		for module in moduleset:
+			for cmd in args:
+				module.command(cmd, options.verbose)
+				
+	except CommandError, exc:
+		print 'Command Error (%s):' % exc.command
+		print 'Command Output:'
+		print exc.output
+	except CommandNotFound, exc:
+		print 'Command "%s" not found.' % exc.command
+	except Exception, exc:
+		print 'error desconocido', exc
+		traceback.print_exc(file=sys.stdout)
+
