@@ -1,6 +1,5 @@
-#!/usr/bin/python
-
 # -*- coding: utf-8 -*-
+#!/usr/bin/python
 #
 # Mono Development Building Script
 #
@@ -72,7 +71,7 @@ if __name__ == '__main__':
 			names = [m.name for m in moduleset]
 			moduleset = moduleset[names.index(options.start):]
 			
-		if not os.path.exists(config.SOUCES_PATH):
+		if not os.path.exists(config.SOURCES_PATH):
 			os.makedirs(config.SOURCES_PATH)
 			
 		if not os.path.isdir(config.SOURCES_PATH):
