@@ -60,10 +60,11 @@ class Module:
 	def command(self, command, verbose=False):
 		try:
 			cmd = getattr(self, command + '_cmd')
+			if cmd is None:
+				return
 		except:
 			raise CommandNotFound(command)
-		if cmd is None:
-			return
+		
 		prev_dir = os.getcwd()
 		src_dir = self._process_template(self.source_dir)
 		if not os.path.isdir(src_dir):
