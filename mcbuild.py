@@ -69,8 +69,16 @@ if __name__ == '__main__':
 		if options.start is not None:
 			names = [m.name for m in moduleset]
 			moduleset = moduleset[names.index(options.start):]
+			
+		if not os.path.exists(config.SOUCES_PATH):
+			os.makedirs(config.SOURCES_PATH)
+			
+		if not os.path.isdir(config.SOURCES_PATH):
+			print '**** Configuration Error: SOURCES_PATH is not a valid directory'
+			sys.exit()
+			
+		os.chdir(config.SOURCES_PATH)
 
-		flag = (options.start != None)
 		for module in moduleset:
 			for cmd in args:
 				module.command(cmd, options.verbose)

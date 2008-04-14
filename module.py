@@ -84,7 +84,7 @@ class Module:
 			result = commands.getstatusoutput(command)
 			if result[0] != 0:
 				raise CommandError(cmd, result[1])
-		print 'Done.'
+		print '**** Done.'
 
 	def _process_template (self, pattern):
 		template = string.Template(pattern)
