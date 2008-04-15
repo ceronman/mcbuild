@@ -63,7 +63,7 @@ if __name__ == '__main__':
 			os.execlp(*args)
 			
 		if options.update:
-			args = ['update', 'configure', 'compile']
+			args = ['update', 'uninstall', 'configure', 'compile']
 
 		execfile(config.MODULESET_PATH)
 

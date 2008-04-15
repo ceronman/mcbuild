@@ -75,7 +75,7 @@ class Module:
 
 	def _execute_cmd (self, cmd, verbose):
 		command = self._process_template(cmd)
-		print '**** Performing "%s" on %s...' % (cmd, self.name)
+		print '**** Performing "%s" ...' % command
 		if verbose:
 			result = os.system(command)
 			if result != 0:

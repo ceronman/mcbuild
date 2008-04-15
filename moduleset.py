@@ -34,13 +34,13 @@ MonoModule(
 )
 
 MonoModule(
-	name = 'gtk-sharp-2.12',
-	configure_cmd = './bootstrap-2.10',
+	name = 'gtk-sharp',
+	configure_cmd = './bootstrap-2.12',
 )
  
 MonoModule(
 	name = 'gnome-sharp',
-	configure_cmd = './bootstrap-2.16',
+	configure_cmd = './bootstrap-2.20',
 )
 
 MonoModule(
@@ -49,7 +49,7 @@ MonoModule(
 
 
 MonoModule(
-	name = 'gtksourceview-sharp',
+	name = 'gtksourceview2-sharp',
 )
 
 MonoModule(
@@ -58,6 +58,11 @@ MonoModule(
 
 MonoModule(
 	name = 'mono-tools',
+)
+
+MonoModule(
+	name = 'monodevelop-1.0',
+	checkout_cmd = 'svn co svn://anonsvn.mono-project.com/source/branches/monodevelop/main/1.0 monodevelop-1.0',
 )
 
 MonoModule(
