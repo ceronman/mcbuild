@@ -55,9 +55,10 @@ if __name__ == '__main__':
 	
 	try:
 		if options.shell:
+			print os.environ
 			os.environ['PS1'] = '[mcbuild]' + os.environ.get('PS1', '[\u@\h \W]\$ ')
 			user_shell = os.environ.get('SHELL', '/bin/sh')
-			os.execl(user_shell)
+			os.execvpe(user_shell, [], os.environ)
 
 		if options.run:
 			os.execlp(*args)

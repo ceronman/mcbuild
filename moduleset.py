@@ -19,10 +19,7 @@ MonoModule(
 # this module is compiled with mono
 MonoModule(
 	name = 'olive',
-	configure_cmd = None,
-	compile_cmd = None,
-	install_cmd = None,
-	uninstall_cmd = None,
+	configure_cmd = './configure',
 )
 
 MonoModule(
@@ -61,8 +58,13 @@ MonoModule(
 )
 
 MonoModule(
+	name = 'mono-addins',
+)
+
+MonoModule(
 	name = 'monodevelop-1.0',
 	checkout_cmd = 'svn co svn://anonsvn.mono-project.com/source/branches/monodevelop/main/1.0 monodevelop-1.0',
+	configure_cmd = './autogen.sh --enable-gtksourceview2=yes'
 )
 
 MonoModule(
@@ -75,5 +77,6 @@ MonoModule(
 	configure_cmd = None,
 	compile_cmd = None,
 	install_cmd = None,
+	uninstall_cmd = None,
 )
 
