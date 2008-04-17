@@ -16,14 +16,13 @@ MonoModule(
 	uninstall_cmd = None,
 )
 
-# this module is compiled with mono
 MonoModule(
-	name = 'olive',
-	configure_cmd = './configure',
+	name = 'mono',
 )
 
 MonoModule(
-	name = 'mono',
+	name = 'olive',
+	configure_cmd = './configure',
 )
 
 MonoModule(
