@@ -95,5 +95,6 @@ class SVNModule(Module):
 	repository = ''
 	checkout_cmd = 'svn checkout $repository/$name'
 	update_cmd = 'svn update'
-	configure_cmd= './autogen.sh'
+	configure_cmd = './autogen.sh'
+	svnclean_cmd = 'svn -R revert .'
 
