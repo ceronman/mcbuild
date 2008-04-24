@@ -1,0 +1,174 @@
+MCBuild: A Mono Development Version Build Script
+================================================
+
+Introduction
+------------
+
+MCBuild is a set of scripts that help you to build the Mono Development Version.
+With MCBuild you can automatically checkout, update, compile and install Mono
+and it's tools within a parallel environment as is described in 
+
+http://www.mono-project.com/Parallel_Mono_Environments
+
+What MCBuild does is to perform a series of operations on work copy directories
+of the repository in order.
+
+MCBuild was intended for use with Mono, but could be easily adapted to work with
+any other software.
+
+MCBuild is inspired by JHBuild (http://live.gnome.org/Jhbuild), but currently
+it's much more simpler and has fewer options.
+
+Usage
+-----
+
+First, you should edit "configuration.py" to configure MCBuild. There are three
+configuration options:
+
+INSTALL_PATH is the path where the parallel environment should be installed. You
+should have write access to this directory
+
+SOURCES_PATH is the path where the source code is going to be downloaded from
+the repositories.
+
+MODULESET_PATH is the file with information about which modules are going to be
+build. Take a look to "moduleset.py" as an example of how to write a module set.
+See the "Moduleset and Commands" section bellow for more information about
+module sets.
+
+Now you can use mcbuild:
+
+./mcbuild.py [list of command]
+
+For example:
+
+$ ./mcbuild.py update configure compile install
+
+This command is going to walk trough every module working copy and perform all
+the commands passed as arguments. If the working copy does not exist, it
+performs a checkout. See "Moduleset and Commands" Section bellow to know about
+what commands you can use
+
+You can use the --shell option to go inside the new parallel environment.
+Example:
+
+$ mono --version
+Mono JIT compiler version 1.2.4 (tarball)
+...
+$ ./mcbuild.py --shell
+$ mono --version
+Mono JIT compiler version 1.9 (/trunk/ r101715)
+...
+
+Options
+-------
+
+-v, --verbose		If you want to know what is going on when the
+             		commands are being executed.
+-s, --start <module>	If you want to start from an specific module instead
+                    	from the first one.
+-e, --shell		Start a shell inside the new Parallel Environment
+-r, --run <program>	If you want to run a program from the Parallel
+                   	Environment. Example: mcbuild --run monodevelop
+
+ModuleSet and Commands
+----------------------
+
+The module set file is a list with the modules that should be build in order. A
+Module should look like this:
+
+Module(
+	name = 'libgdiplus',
+	repository = 'svn://anonsvn.mono-project.com/source/trunk' ,
+	source_dir = '$name'
+	checkout_cmd = 'svn checkout $repository/$name'
+	update_cmd = 'svn update'
+	configure_cmd = './autogen.sh'
+	compile_cmd = 'make'
+	install_cmd = 'make install'
+	uninstall_cmd = 'make uninstall'
+	clean_cmd = 'make clean'
+	svnclean_cmd = 'svn -R revert .'
+)
+
+Some commands are common for most cases, for example, most modules are compiled
+with "make" and installed with "make install"
+
+There are some default values for a Module:
+
+	source_dir = '$name'
+	configure_cmd = './configure'
+	compile_cmd = 'make'
+	install_cmd = 'make install'
+	uninstall_cmd = 'make uninstall'
+	clean_cmd = 'make clean'
+
+So, unless you have a module with different commands for this actions, you can
+omit them in the moduleset file. Additionally, there is a SVNModule class that
+is used for subversion repositories and also defines some default values:
+
+class SVNModule(Module):
+	repository = ''
+	checkout_cmd = 'svn checkout $repository/$name'
+	update_cmd = 'svn update'
+	configure_cmd = './autogen.sh'
+	svnclean_cmd = 'svn -R revert .'
+
+Note that you can use variable names inside commands using '$' as prefix.
+Example: checkout_cmd = 'svn checkout $repository/$name'
+
+Note that in the SVNModule class, the configure command has been overridden to
+'./autogen.sh'
+
+It's important to know that the moduleset file is a Python file. That means that
+you can use any Python tricks to make your life easier.
+
+Mono modules share the same repository, that's why it's useful to create a
+MonoModule class with the repository name instead of assigning "repository" to
+each module:
+
+class MonoModule(SVNModule):
+	repository = 'svn://anonsvn.mono-project.com/source/trunk'
+
+Now we can define our libgdiplus module in a shorter way:
+
+MonoModule(
+	name = 'libgdiplus',
+)
+
+If you don't want a command to be executed within a module you can assign None
+to that command. For example:
+
+MonoModule(
+	name = 'mcs',
+	configure_cmd = None,
+	compile_cmd = None,
+	install_cmd = None,
+	uninstall_cmd = None,
+)
+
+Since "mcs" is compiled from "mono", we don't want to execute any compile
+command inside "mcs".
+
+Defining new Commands
+---------------------
+
+If you need an additional command to be executed inside a working directory,
+you can add it to your module using the '_cmd' sufix. Example:
+
+MonoModule(
+	name = 'mono-tools',
+	cleanbackups_cmd = 'rm -rf *~'
+)
+
+In this case we defined a new cleanbackups command for erasing backup files. You
+can use it in this way:
+
+$ ./mcbuild.py cleanbackups
+
+Note that if you define new commands, they should be defined for all modules in
+your moduleset. If you want those commands to be performed only on some modules,
+you should use None on the modules you don't want.
+
+
+

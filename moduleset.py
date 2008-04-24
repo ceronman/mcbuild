@@ -70,7 +70,7 @@ MonoModule(
 	name = 'moon',
 )
 
-# this module is compiled from monodevelop
+# this module is compiled with monodevelop
 MonoModule(
 	name = 'lunareclipse',
 	configure_cmd = None,
