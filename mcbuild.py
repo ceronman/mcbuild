@@ -46,10 +46,11 @@ if __name__ == '__main__':
 	configure_environment()
 	global moduleset
 	parser = optparse.OptionParser()
-	parser.add_option('-s', '--start', dest='start', help='Start from which module')
-	parser.add_option('-e', '--shell', action='store_true', dest='shell', help='Open a shell inside the new environment')
+	parser.add_option('-f', '--from', dest='from_', help='From which module to start')
+	parser.add_option('-t', '--to', dest='to', help='Perform until wich module')
+	parser.add_option('-o', '--only', dest='only', help='Wich module to perform')
+	parser.add_option('-s', '--shell', action='store_true', dest='shell', help='Open a shell inside the new environment')
 	parser.add_option('-r', '--run', action='store_true', dest='run', help='Run a program inside the new environment')
-	parser.add_option('-u', '--update', action='store_true', dest='update', help='Update and rebuild all modules')
 	parser.add_option('-v', '--verbose', action='store_true', dest='verbose', help='Show output of commands')
 	(options, args) = parser.parse_args()
 	
@@ -62,14 +63,24 @@ if __name__ == '__main__':
 		if options.run:
 			os.execlp(*args)
 			
-		if options.update:
-			args = ['update', 'uninstall', 'configure', 'compile']
-
 		execfile(config.MODULESET_PATH)
-
-		if options.start is not None:
-			names = [m.name for m in moduleset]
-			moduleset = moduleset[names.index(options.start):]
+		
+		names = [m.name for m in moduleset]
+		
+		if options.from_ is None:
+			from_ = 0
+		else:
+			from_ = names.index(options.from_)
+			
+		if options.to is None:
+			to = len(names)
+		else:
+			to = names.index(options.to) + 1
+		
+		moduleset = moduleset[from_:to]
+		
+		if options.only is not None:
+			moduleset = [moduleset[names.index(options.only)]]
 			
 		if not os.path.exists(config.SOURCES_PATH):
 			os.makedirs(config.SOURCES_PATH)
