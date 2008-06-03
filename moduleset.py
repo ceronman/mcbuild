@@ -18,6 +18,7 @@ MonoModule(
 
 MonoModule(
 	name = 'mono',
+	configure_cmd = './autogen.sh --with-moonlight=yes'
 )
 
 MonoModule(
@@ -60,14 +61,15 @@ MonoModule(
 	name = 'mono-addins',
 )
 
+import configuration
 MonoModule(
-	name = 'monodevelop-1.0',
-	checkout_cmd = 'svn co svn://anonsvn.mono-project.com/source/branches/monodevelop/main/1.0 monodevelop-1.0',
-	configure_cmd = './autogen.sh --enable-gtksourceview2=yes'
+	name = 'monodevelop',
+	configure_cmd = './configure --profile=core --prefix=%s' % configuration.INSTALL_PATH
 )
 
 MonoModule(
 	name = 'moon',
+	configure_cmd = './autogen.sh --with-mono=yes'
 )
 
 # this module is compiled with monodevelop
