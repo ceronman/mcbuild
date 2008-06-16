@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
 
 class MonoModule(SVNModule):
-	repository = 'svn://anonsvn.mono-project.com/source/trunk' 
+#	repository = 'svn://anonsvn.mono-project.com/source/trunk'
+	repository = 'svn+ssh://manuelc@mono-cvs.ximian.com/source/trunk' 
 
 MonoModule(
 	name = 'libgdiplus',

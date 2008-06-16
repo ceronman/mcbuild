@@ -70,20 +70,21 @@ class Module:
 		if not os.path.isdir(src_dir):
 			self._execute_cmd(self.checkout_cmd, verbose)
 		os.chdir(src_dir)
-		self._execute_cmd(cmd, verbose)
+		if callable(cmd):
+			self._execute_function(cmd, verbose)
+		else:
+			self._execute_cmd(cmd, verbose)
 		os.chdir(prev_dir)
 
 	def _execute_cmd (self, cmd, verbose):
 		command = self._process_template(cmd)
 		print '**** Performing "%s" on %s...' % (command, self.name)
-		if verbose:
-			result = os.system(command)
-			if result != 0:
-				raise CommandError(cmd)
-		else:
-			result = commands.getstatusoutput(command)
-			if result[0] != 0:
-				raise CommandError(cmd, result[1])
+		self._call_command(command, verbose)
+		print '**** Done.'
+
+	def _execute_function(self, function, verbose):
+		print '**** Calling "%s" on %s...' % (function.__name__, self.name)
+		function(verbose)
 		print '**** Done.'
 
 	def _process_template (self, pattern):
@@ -91,10 +92,34 @@ class Module:
 		d = dict([(prop, getattr(self, prop)) for prop in dir(self)])
 		return template.substitute(d).strip()
 
+	def _call_command(self, cmd, verbose):
+		if verbose:
+			result = os.system(cmd)
+			if result != 0:
+				raise CommandError(cmd)
+		else:
+			result = commands.getstatusoutput(cmd)
+			if result[0] != 0:
+				raise CommandError(cmd, result[1])
+
 class SVNModule(Module):
 	repository = ''
 	checkout_cmd = 'svn checkout $repository/$name'
 	update_cmd = 'svn update'
 	configure_cmd = './autogen.sh'
 	svnclean_cmd = 'svn -R revert .'
+	status_cmd = 'svn status'
+
+	def superclean_cmd(self, verbose):
+		self._call_command('svn -R revert .', verbose)
+		for line in commands.getstatusoutput('svn st')[1].split('\n'):
+			parts = line.split('      ')
+			if len(parts) != 2:
+				continue
+			path = parts[1]
+			if not os.path.exists(path):
+				continue
+			if verbose:
+				print 'removing:', path
+			self._call_command('rm -rf %s' % path, verbose)
 
