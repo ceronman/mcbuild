@@ -38,11 +38,13 @@ MonoModule(
  
 MonoModule(
 	name = 'gnome-sharp',
+	update_cmd = 'svn update -r109793',
 	configure_cmd = './bootstrap-2.20',
 )
 
 MonoModule(
 	name = 'gnome-desktop-sharp',
+	update_cmd = 'svn update -r109793',
 )
 
 

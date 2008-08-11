@@ -1,6 +1,8 @@
 MCBuild: A Mono Development Version Build Script
 ================================================
 
+By Manuel Cerón <ceronman@unicauca.edu.co>
+
 Introduction
 ------------
 
@@ -91,6 +93,7 @@ Module(
 	uninstall_cmd = 'make uninstall'
 	clean_cmd = 'make clean'
 	svnclean_cmd = 'svn -R revert .'
+	distclean_cmd = 'make distclean'
 )
 
 Some commands are common for most cases, for example, most modules are compiled

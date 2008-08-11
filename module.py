@@ -49,6 +49,7 @@ class Module:
 	install_cmd = 'make install'
 	uninstall_cmd = 'make uninstall'
 	clean_cmd = 'make clean'
+	distclean_cmd = 'make distclean'
 
 	def __init__ (self, name, **args):
 		self.name = name
