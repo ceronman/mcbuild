@@ -15,6 +15,7 @@ MonoModule(
 	compile_cmd = None,
 	install_cmd = None,
 	uninstall_cmd = None,
+	distclean_cmd = None,
 )
 
 MonoModule(
@@ -25,6 +26,7 @@ MonoModule(
 MonoModule(
 	name = 'olive',
 	configure_cmd = './configure',
+	distclean_cmd = None,
 )
 
 MonoModule(
@@ -67,12 +69,14 @@ MonoModule(
 import configuration
 MonoModule(
 	name = 'monodevelop',
-	configure_cmd = './configure --profile=core --prefix=%s' % configuration.INSTALL_PATH
+	configure_cmd = './configure --profile=core --prefix=%s' % configuration.INSTALL_PATH,
+	distclean_cmd = None,
+	cleaninstall_cmd = None,
 )
 
-MonoModule(
+MonoModule(z
 	name = 'moon',
-	configure_cmd = './autogen.sh --with-mono=yes'
+	configure_cmd = './autogen.sh --with-managed=desktop'
 )
 
 # this module is compiled with monodevelop
@@ -82,5 +86,7 @@ MonoModule(
 	compile_cmd = None,
 	install_cmd = None,
 	uninstall_cmd = None,
+	distclean_cmd = None,
+	cleaninstall_cmd = None,
 )
 
