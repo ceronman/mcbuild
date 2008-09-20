@@ -74,7 +74,7 @@ MonoModule(
 	cleaninstall_cmd = None,
 )
 
-MonoModule(z
+MonoModule(
 	name = 'moon',
 	configure_cmd = './autogen.sh --with-managed=desktop'
 )
