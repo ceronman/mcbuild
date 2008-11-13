@@ -40,13 +40,11 @@ MonoModule(
  
 MonoModule(
 	name = 'gnome-sharp',
-	update_cmd = 'svn update -r109793',
 	configure_cmd = './bootstrap-2.20',
 )
 
 MonoModule(
 	name = 'gnome-desktop-sharp',
-	update_cmd = 'svn update -r109793',
 )
 
 
@@ -76,7 +74,7 @@ MonoModule(
 
 MonoModule(
 	name = 'moon',
-	configure_cmd = './autogen.sh --with-managed=desktop'
+	configure_cmd = './autogen.sh --with-managed=yes'
 )
 
 # this module is compiled with monodevelop
