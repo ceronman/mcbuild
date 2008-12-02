@@ -40,17 +40,13 @@ MonoModule(
  
 MonoModule(
 	name = 'gnome-sharp',
-	configure_cmd = './bootstrap-2.20',
+	configure_cmd = './bootstrap-2.24',
 )
 
 MonoModule(
 	name = 'gnome-desktop-sharp',
 )
 
-
-MonoModule(
-	name = 'gtksourceview2-sharp',
-)
 
 MonoModule(
 	name = 'gtkmozembed-sharp',
