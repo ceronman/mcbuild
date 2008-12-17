@@ -30,10 +30,6 @@ MonoModule(
 )
 
 MonoModule(
-	name = 'monodoc',
-)
-
-MonoModule(
 	name = 'gtk-sharp',
 	configure_cmd = './bootstrap-2.12',
 )
