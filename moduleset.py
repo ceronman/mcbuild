@@ -31,16 +31,18 @@ MonoModule(
 
 MonoModule(
 	name = 'gtk-sharp',
-	configure_cmd = './bootstrap-2.12',
+	configure_cmd = './bootstrap-2.14',
 )
  
 MonoModule(
 	name = 'gnome-sharp',
+#	update_cmd = 'svn up -r116682',
 	configure_cmd = './bootstrap-2.24',
 )
 
 MonoModule(
 	name = 'gnome-desktop-sharp',
+#	update_cmd = 'svn up -r116682',
 )
 
 
@@ -64,19 +66,27 @@ MonoModule(
 	cleaninstall_cmd = None,
 )
 
-MonoModule(
-	name = 'moon',
-	configure_cmd = './autogen.sh --with-managed=yes'
-)
+#MonoModule(
+#	name = 'moon',
+#	configure_cmd = './autogen.sh --with-managed=yes'
+#s)
+
+#MonoModule(
+#	name = 'bitsharp',
+#)
+
+#MonoModule(
+#	name = 'monsoon',
+#)
 
 # this module is compiled with monodevelop
-MonoModule(
-	name = 'lunareclipse',
-	configure_cmd = None,
-	compile_cmd = None,
-	install_cmd = None,
-	uninstall_cmd = None,
-	distclean_cmd = None,
-	cleaninstall_cmd = None,
-)
+#MonoModule(
+#	name = 'lunareclipse',
+#	configure_cmd = None,
+#	compile_cmd = None,
+#	install_cmd = None,
+#	uninstall_cmd = None,
+#	distclean_cmd = None,
+#	cleaninstall_cmd = None,
+#)
 
